@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-h=[]
+h=[] #every crime varuable
 b=1
 while b == 1:
-  Years=input("years:2010-2019 or 2020-current, q to quit: ")
+  Years=input("years:2010-2019 or 2020-current, q to quit: ")#what data they want
   Years.lower()
   if Years == "2010-2019":#choose if data is from 2010-2019 or 2020-current
     info=pd.read_json("https://data.lacity.org/resource/63jg-8b9z.json?$limit=100000")
@@ -21,6 +21,7 @@ try:#how the text is going to look
   font1 = {'family':'serif','color':'blue','size':20}
   font2 = {'family':'serif','color':'black','size':10}
   for index,row in info.iterrows():
+    #find the latitude and longitude of all the crimes and what crimes were commited
     x=row['lat']#latitude
     y=row['lon']#longitude
     if x != 0 and y !=0:
