@@ -7,10 +7,10 @@ while b == 1:
   Years=input("years:2010-2019 or 2020-current, q to quit: ")
   Years.lower()
   if Years == "2010-2019":
-    info=pd.read_json("https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000")
+    info=pd.read_json("https://data.lacity.org/resource/63jg-8b9z.json?$limit=10000")
     break
-  elif Years == "2010-2019":
-    info=pd.read_json("https://data.lacity.org/resource/2nrs-mtv8.json?$limit=1000")
+  elif Years == "2020-current":
+    info=pd.read_json("https://data.lacity.org/resource/2nrs-mtv8.json?$limit=10000")
     break
   elif Years == "q":
     break
@@ -32,16 +32,15 @@ try:
   h.sort()
   z=set(h)
   plt.figure(figsize=(15, 10))
+
   for p in z:
     q = h.count(p)
     plt.bar(p,q)
-  
+    plt.text(p, q, q,ha = 'center')
   plt.title("Crime in los Angeles",fontdict = font1)
   plt.xlabel("Longitude",fontdict = font2)
   plt.ylabel("Latitude",fontdict = font2)
-
   plt.xticks(rotation=90)
-  
 
   plt.show()
 except:
