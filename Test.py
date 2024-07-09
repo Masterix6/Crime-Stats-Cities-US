@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-![Open In Colab](https://colab.research.google.com/drive/1FJYXPmux6_M7lb-io6nUdjhhwQcYO1Ce#scrollTo=aMPCIS89CFHQ)
 h=[]
 b=1
 while b == 1:
