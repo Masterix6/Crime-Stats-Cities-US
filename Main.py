@@ -1,2 +1,2 @@
 import DataCollection
-DataCollection.getDataFrame()
+print(DataCollection.getDataFrame("NY"))
