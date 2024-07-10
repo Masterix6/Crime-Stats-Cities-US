@@ -41,8 +41,8 @@ keys_for_analyzing = { # keys which will be kept
         # "susp_sex": "suspect_sex", #
 
         "vict_age": "victim_age",
-        "vict_descent": "victim_race", # needs conversion
-        "vict_sex": "vicitm_sex", # needs conversion
+        "vict_descent": "victim_race",
+        "vict_sex": "vicitm_sex",
 
         "lat": "latitude",
         "lon": "longitude",
