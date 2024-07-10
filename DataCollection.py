@@ -1,7 +1,18 @@
 # script for getting the data from the api, removing unneccessary keys and converts it into a (for the programe) readable table
 
 import pandas
-
+TypesOfInformationCities={"NY":{"Reported":["start_date","start_time",'borough']},"La":""}
+while True:
+    data_bases=input("What city do you want to look at, (about) to see what citys you can choose from, q to quit: ")
+    data_bases.lower()
+    if data_bases == "about":
+        print(TypesOfInformationCities)
+        continue
+    elif data_bases=="q":
+        quit()
+    wanteddatatype=input("docuement do you want:")
+    Wanteddata=input("what statistic do you want: ")
+    break
 keys_for_analyzing = { # keys which will be kept
     "NY": {
         "cmplnt_fr_dt": "start_date",
