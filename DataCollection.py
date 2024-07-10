@@ -10,6 +10,15 @@ keys_for_analyzing = { # keys which will be kept
         "cmplnt_to_tm": "end_time",
         "rpt_dt": "report_date",
         "": "",
+    "LA":{
+        "crm_cd_desc":"crime",
+        "area":"area",
+        "rpt_dist_no":"location_code",
+        "vict_sex":"victums_sex",
+        "vict_age":"victums_age",
+        "vict_descent":"victum descent",
+        "premis_cd":"premis_area"
+    }
 
 
     }
