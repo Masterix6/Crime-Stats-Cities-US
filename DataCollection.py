@@ -9,24 +9,49 @@ keys_for_analyzing = { # keys which will be kept
         "cmplnt_to_dt": "end_date",
         "cmplnt_to_tm": "end_time",
         "rpt_dt": "report_date",
-        
-        "law_cat_cd": "lvl_offense",
+
+        "ofns_desc": "crime_desc",
         "boro_nm": "borough",
 
         "susp_age_group": "suspect_age",
         "susp_race": "suspect_race",
         "susp_sex": "suspect_sex",
 
+        "vic_age_group": "victim_age",
+        "vic_race": "victim_race",
+        "vic_sex": "vicitm_sex",
+
         "latitude": "latitude",
         "longitude": "longitude",
-        "lat_lon": "location",
 
+    },
+
+     "LA": {
+        "date_occ": "start_date",
+        "time_occ": "start_time",
+        # "cmplnt_to_dt": "end_date", #
+        # "cmplnt_to_tm": "end_time", #
+        "date_rptd": "report_date",
+        
+        "crm_cd_desc": "crime_desc",
+        "area_name": "borough",
+
+        # "susp_age_group": "suspect_age", #
+        # "susp_race": "suspect_race", #
+        # "susp_sex": "suspect_sex", #
+
+        "vict_age": "victim_age",
+        "vict_descent": "victim_race", # needs conversion
+        "vict_sex": "vicitm_sex", # needs conversion
+
+        "lat": "latitude",
+        "lon": "longitude",
     }
 } 
 
 data_bases = { # Structure: "City(short)": api # website
     "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=1000", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=50000",
+    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
 }
 
 # get the Dataframe of choosen city with only valid coloums (to analyze)
