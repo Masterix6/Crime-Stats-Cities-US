@@ -9,11 +9,11 @@ TypesOfInformationCities={"ny":{"reported":["start_date","start_time","borough",
 keys_for_analyzing = { # keys which will be kept
     "ny": {
 "reported":
-        {"date":["cmplnt_fr_dt","cmplnt_to_dt"],
-        "start_time":["cmplnt_fr_tm","cmplnt_to_tm"],
-        "borough":["boro_nm"],
+        {"date":["start_date","end_date"],
+        "start_time":["start_time","end_time"],
+        "borough":["borough"],
         "location":["latitude","longitude"],
-        "suspect":["susp_age_group","susp_race","susp_sex"],
+        "suspect":["suspect_age","suspect_race","suspect_sex"],
         "victim":["vic_age_group","vic_race","vict_sex"]}
     },
     "la":{
@@ -36,23 +36,38 @@ keys_for_analyzing = { # keys which will be kept
 
 data_bases = { # Structure: "City(short)": api # website
     "ny": {"reported":"https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=1000"}, # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "la": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=50000",
+    "la": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000",
 }
-links=None
+
 dataplayerwants=None
 link=None
-def getDataFrame(Link,datawanted):
-    while True:
+def getDataFrame():
+    b=1
+    while b==1:
         print(TypesOfInformationCities.keys())
         x=input("use the form city q to quit: ")
-        y=input("use the form data, q to quit: ")
-        z=input("use the form information, q to quit: ")
-        if x =="q" and y == "q"  and z== "q":
+        if x =="q":
             quit()
-        if x in TypesOfInformationCities and y in TypesOfInformationCities.get(x) and z in TypesOfInformationCities.get(x).get(y):
-            print(TypesOfInformationCities.keys)
-            break
+        if x in TypesOfInformationCities:
+            print(TypesOfInformationCities[x])
+            y=input("use the form data, q to quit: ")
+            if y == "q":
+                quit()
+            if y in TypesOfInformationCities.get(x):
+                print(TypesOfInformationCities[x][y])
+                z=input("use the form information, q to quit: ")
+                if z== "q":
+                    quit()
+                if z in TypesOfInformationCities.get(x).get(y):
+                    print("hello")
+                    break
         else:
             print("Something went wrong, check if you put in right form")
             continue
-getDataFrame(links,dataplayerwants)
+    global link
+    link = data_bases.get(x).get(y)
+    global dataplayerwants
+    dataplayerwants = keys_for_analyzing.get(x).get(y).get(z)
+    
+
+    return link

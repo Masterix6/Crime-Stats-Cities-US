@@ -1,55 +1,37 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-h=[]
+import DataProcessing
+link=DataProcessing.getDataFrame()
+dataplayerwants = None
+#DataProcessing.getDataFrame()
+print(link)
+h=[] #every crime varuable
 b=1
-while b == 1:
-  Years=input("years:2010-2019 or 2020-current, q to quit: ")
-  Years.lower()
-  if Years == "2010-2019":
-    info=pd.read_json("https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000000")
-    break
-  elif Years == "2020-current":
-    info=pd.read_json("https://data.lacity.org/resource/2nrs-mtv8.json?$limit=1000000")
-    break
-  elif Years == "q":
-    break
-  else:
-    print("did not put valad answer, please try again")
-    continue
-try:
-  x_list = []
-  y_list = []
-
-
-
-  font1 = {'family':'serif','color':'blue','size':20}
-  font2 = {'family':'serif','color':'black','size':10}
-  for index,row in info.iterrows():
-    if row['lat'] != 0 and row['lon'] != 0:
-      x_list.append(row['lat'])
-      y_list.append(row['lon'])
-      h=h+[row['crm_cd_desc']]
-
-  plt.scatter(x_list, y_list)
-  plt.show()
-  print("Here 1")
-  #h = row['crm_cd_desc'].sort()
-  z=set(h)
-  print(z)
-  plt.figure(figsize=(15, 10))
-
-  for p in z:
-    #print("Here")
-    q = h.count(p)
-    plt.bar(p,q)
-    plt.text(p, q, q,ha = 'center')
+info=pd.read_json(link)
+print(info)
+font1 = {'family':'serif','color':'blue','size':20}
+font2 = {'family':'serif','color':'black','size':10}
+for index,row in info.iterrows():
+  #find the latitude and longitude of all the crimes and what crimes were commited
+  x=row['latitude']#latitude
+  y=row['longitude']#longitude
+  if x != 0 and y !=0:
+    plt.plot(x, y,marker = '*',ms=0.1)#maked  the graph
   
-  plt.title("Crime in los Angeles",fontdict = font1)
-  plt.xlabel("Longitude",fontdict = font2)
-  plt.ylabel("Latitude",fontdict = font2)
-  plt.xticks(rotation=90)
+  h=h+[row['crime']]#get all the crimes commited
+plt.show()#show the map
+h.sort()#sort all the crimes
+z=set(h)#gets rid of all duplicates
+plt.figure(figsize=(15, 10))#sets size for graph
 
-  plt.show()
-except:
-  exit()
+for p in z:#gets all of the difrent crimes
+  q = h.count(p)#see how many times the crime was commited
+  plt.bar(p,q)#creates the bar
+  plt.text(p, q, q,ha = 'center')#adds the labals to the graph
+plt.title(f"Crime Data",fontdict = font1)#title
+plt.xlabel("Longitude",fontdict = font2)#x labal
+plt.ylabel("Latitude",fontdict = font2)#y lebal
+plt.xticks(rotation=90)#rotates the titals and makes it so it doesn't overlap
+
+plt.show()#show graph

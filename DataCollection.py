@@ -1,18 +1,7 @@
 # script for getting the data from the api, removing unneccessary keys and converts it into a (for the programe) readable table
 
 import pandas
-TypesOfInformationCities={"NY":{"Reported":["start_date","start_time",'borough']},"La":""}
-while True:
-    data_bases=input("What city do you want to look at, (about) to see what citys you can choose from, q to quit: ")
-    data_bases.lower()
-    if data_bases == "about":
-        print(TypesOfInformationCities)
-        continue
-    elif data_bases=="q":
-        quit()
-    wanteddatatype=input("docuement do you want:")
-    Wanteddata=input("what statistic do you want: ")
-    break
+
 keys_for_analyzing = { # keys which will be kept
     "NY": {
         "cmplnt_fr_dt": "start_date",
@@ -20,21 +9,44 @@ keys_for_analyzing = { # keys which will be kept
         "cmplnt_to_dt": "end_date",
         "cmplnt_to_tm": "end_time",
         "rpt_dt": "report_date",
+        
         "law_cat_cd": "lvl_offense",
         "boro_nm": "borough",
         "susp_age_group": "suspect_age",
         "susp_race": "suspect_race",
         "susp_sex": "suspect_sex",
+
         "latitude": "latitude",
         "longitude": "longitude",
-        "lat_lon": "location",
 
+    },
+
+     "LA": {
+        "date_occ": "start_date",
+        "time_occ": "start_time",
+        # "cmplnt_to_dt": "end_date", #
+        # "cmplnt_to_tm": "end_time", #
+        "date_rptd": "report_date",
+        
+        "crm_cd_desc": "crime_desc",
+        "area_name": "borough",
+
+        # "susp_age_group": "suspect_age", #
+        # "susp_race": "suspect_race", #
+        # "susp_sex": "suspect_sex", #
+
+        "vict_age": "victim_age",
+        "vict_descent": "victim_race", # needs conversion
+        "vict_sex": "vicitm_sex", # needs conversion
+
+        "lat": "latitude",
+        "lon": "longitude",
     }
 } 
 
 data_bases = { # Structure: "City(short)": api # website
     "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=1000", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=50000",
+    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
 }
 
 
