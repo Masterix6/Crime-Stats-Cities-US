@@ -76,6 +76,9 @@ def getDataFrame(city: str):
     
     
     data_base = pandas.read_json(data_base) # get json data from api with pandas
+
+    print(f"Got json after {time.time() - start_time} seconds")
+
     to_drop = list(data_base.columns) - label_conversion.keys() # set list of keys which are not eligible for analyzing
 
     data_base.drop(to_drop, axis=1, inplace=True) # removing not eligible keys
