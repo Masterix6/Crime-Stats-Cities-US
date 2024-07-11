@@ -1,27 +1,30 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import DataProcessingI
-link=DataProcessingI.getDataFrame()
-dataplayerwants = None
+import DataCollectionI
+import DataCollectionA
+
+link,dataplayerwants2=DataCollectionI.getDataFrameI()
+dataplayerwants2 =dataplayerwants2.pop()
+
 #DataProcessing.getDataFrame()
-print(link)
 h=[] #every crime varuable
 b=1
-info=pd.read_json(link)
-print(info)
+#info=pd.read_json(link)
 font1 = {'family':'serif','color':'blue','size':20}
 font2 = {'family':'serif','color':'black','size':10}
+info=pd.read_json(link)
 for index,row in info.iterrows():
   #find the latitude and longitude of all the crimes and what crimes were commited
+  
   x=row['latitude']#latitude
   y=row['longitude']#longitude
   if x != 0 and y !=0:
-    plt.plot(x, y,marker = '*',ms=0.1)#maked  the graph
-  
-  h=h+[row['crime']]#get all the crimes commited
+    plt.plot(y, x,marker = '*',ms=0.1)#maked  the graph
+  #print(row[dataplayerwants1])
+  h=h+[row[dataplayerwants2]]#get all the crimes commited
+print(h)
 plt.show()#show the map
-h.sort()#sort all the crimes
 z=set(h)#gets rid of all duplicates
 plt.figure(figsize=(15, 10))#sets size for graph
 

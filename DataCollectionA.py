@@ -3,7 +3,7 @@
 import pandas
 
 keys_for_analyzing = { # keys which will be kept
-    "NY": {
+    "ny": {
         "cmplnt_fr_dt": "start_date",
         "cmplnt_fr_tm": "start_time",
         "cmplnt_to_dt": "end_date",
@@ -26,7 +26,7 @@ keys_for_analyzing = { # keys which will be kept
 
     },
 
-     "LA": {
+     "la": {
         "date_occ": "start_date",
         "time_occ": "start_time",
         # "cmplnt_to_dt": "end_date", #
@@ -50,8 +50,8 @@ keys_for_analyzing = { # keys which will be kept
 } 
 
 data_bases = { # Structure: "City(short)": api # website
-    "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=1000", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
+    "ny": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=100", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
+    "la": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=100", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
 }
 
 # get the Dataframe of choosen city with only valid coloums (to analyze)

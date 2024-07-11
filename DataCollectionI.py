@@ -1,6 +1,8 @@
 # script for getting the data from the api, removing unneccessary keys and converts it into a (for the programe) readable table
-
 import pandas
+import DataCollectionA
+
+
 #this is where we will store the opions for what you can choose
 TypesOfInformationCities={"ny":{"reported":["start_date","start_time","borough","suspect","victum"]},
                           "la":[{"2010-2019":["area","victum","datetime_occured","location","crime"]}, 
@@ -11,7 +13,7 @@ keys_for_analyzing = { # keys which will be kept
 "reported":
         {"date":["start_date","end_date"],
         "start_time":["start_time","end_time"],
-        "borough":["borough"],
+        "borough":["boro_nm"],
         "location":["latitude","longitude"],
         "suspect":["suspect_age","suspect_race","suspect_sex"],
         "victim":["vic_age_group","vic_race","vict_sex"]}
@@ -35,13 +37,14 @@ keys_for_analyzing = { # keys which will be kept
 } 
 
 data_bases = { # Structure: "City(short)": api # website
-    "ny": {"reported":"https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=1000"}, # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "la": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000",
+    "ny": {"reported":"https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=100"}, # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
+    "la": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=100",
 }
 
 dataplayerwants=None
 link=None
-def getDataFrame():
+dataBase=None
+def getDataFrameI():
     b=1
     while b==1:
         print(TypesOfInformationCities.keys())
@@ -67,7 +70,8 @@ def getDataFrame():
     global link
     link = data_bases.get(x).get(y)
     global dataplayerwants
-    dataplayerwants = keys_for_analyzing.get(x).get(y).get(z)
-    
-
-    return link
+    dataplayerwants2 = keys_for_analyzing.get(x).get(y).get(z)
+    dataplayerwants2 =dataplayerwants2.pop()
+    dataplayerwants2=dataplayerwants2.split(",")
+    print(dataplayerwants2)
+    return link, dataplayerwants2
