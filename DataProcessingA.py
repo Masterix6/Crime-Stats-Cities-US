@@ -227,7 +227,7 @@ def ConvertData(data_base: pandas.DataFrame, city: str, to_convert: str, merge=F
         return data_base # return unchanged data base
     
     if conversion == False: # False = format is already good, no changing needed
-        print("Conversion not possible")
+        #print("Conversion not possible")
         return data_base # return unchanged data base
 
     # get column and conversion data for merge if merge is requested
@@ -287,6 +287,11 @@ def GetGraph_CompareCities(dataframes: (dict),
     X_values are the names sorted and y_values the amount of those.
     '''
 
+    for dataframe in dataframes.values():
+        if not x_column in dataframe.columns:
+            print("x or y column does not exits for at least one of the cities")
+            return
+
     x_values = set() # set so no doubles, only unique
     x_values_indexs = {} # x_value: index of x_value in
     graphs = {} # y_value for each graph/dataframe
@@ -326,7 +331,12 @@ def GetGraph_CompareCities(dataframes: (dict),
             print("Creating x values failed, returnig")
             return
 
-    x_values = list(x_values) # convert to list so matplotlib can work with it
+    x_values = list()
+    for dataframe in dataframes.values():
+        x_values += list(dataframe[x_column].unique())
+
+    
+    x_values = list(set(x_values)) # convert to list so matplotlib can work with it
     x_values.sort() # sort it to not mess up graphs (which go for example backwards)
 
     # create table to easier change the correct value with the correct index in the y_values/graphs dict
@@ -335,7 +345,7 @@ def GetGraph_CompareCities(dataframes: (dict),
         x_values_indexs[value] = index
         index += 1
 
-    print(x_values)
+    print(x_values_indexs)
     # create keys/indexs to prevent key error
     for current_graph, dataframe in dataframes.items():
         for index in x_values_indexs.values():
@@ -363,18 +373,19 @@ def GetGraph_CompareCities(dataframes: (dict),
         else:
             if attribute_of_value: # if for example it should extract year from datetime
                 for index, row in dataframe.iterrows():
-                    print(row[x_column].__getattribute__(attribute_of_value))
+                    #print(row[x_column].__getattribute__(attribute_of_value))
                     try:
-                        graphs[current_graph][int(x_values_indexs[row[x_column]])] += 1 # add 1 to the value which is linked to the same data value
+                        graphs[current_graph][int(x_values_indexs[row[x_column].__getattribute__(attribute_of_value)])] += 1 # add 1 to the value which is linked to the same data value
                     except:
                         pass
-                    
+
             else: # if it should just take the value without extraction
                 for index, row in dataframe.iterrows():
                     graphs[current_graph][int(x_values_indexs[row[x_column]])] += 1 # add 1 to the value which is linked to the same data value
 
         graphs[current_graph] = list(graphs[current_graph].values()) # convert each graph to list to make it readable for matplotlib
 
+    print(graphs)
     return [list(x_values), graphs]
 
 
@@ -388,6 +399,11 @@ def GetGraph_CompareCity(dataframe: pandas.DataFrame,
     '''This function counts the amount of a appearances of one value in different data frames. 
     X_values are the names sorted and y_values the amount of those.
     '''
+
+    if not x_column in dataframe.columns or not y_column in dataframe:
+        print("x or y column does not exits for this city")
+        return
+
 
     x_values = set() # set so no doubles, only unique
     x_values_indexs = {} # x_value: index of x_value in
@@ -467,6 +483,10 @@ def GetBars_CompareCity(dataframe: pandas.DataFrame,
     '''This function counts the amount of a appearances of one value in different data frames. 
     It returns labels + sizes which fit for bar and pie charts.
     '''
+
+    if not column in dataframe.columns:
+        print("x or y column does not exits for this city")
+        return
 
     x_values = set() # set so no doubles, only unique
     x_values_indexs = {} # x_value: index of x_value in

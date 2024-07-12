@@ -36,14 +36,14 @@ ConvertAll()
 
 print(f"Processed all data after {time.time() - start_time}")
 
-print(f"Hello, this program can analyze crime data from different cities. Current cities included are: " + ", ".join(cities))
+print(f"\nHello, this program can analyze crime data from different cities. Current cities included are: " + ", ".join(cities))
 print(f"You can choose if you ether want to compare data between cities or within one city.")
 print(f"You can display the data in 3 different ways: graph, bar, pie, map")
 print(f"You can select data from different columns: " + ", ".join(keys_for_analyzing))
 print(f"From dates you can choose from: year, month, day, hour, second")
 
 while True:
-    compare_type = input("Do you want to analyze data within one city (1) or compare between multiple cites (2)?: ")
+    compare_type = input("\nDo you want to analyze data within one city (1) or compare between multiple cites (2)?: ")
     if compare_type == "":
         break
 
@@ -61,6 +61,7 @@ while True:
         city = input("Which city do you want to analyze the data from?: ")
         if not city in cities:
             print("city not valid")
+            continue
 
 
         graph_type = input("How do you want to display the data?: ")
