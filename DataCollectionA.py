@@ -50,8 +50,8 @@ keys_for_analyzing = { # keys which will be kept
 } 
 
 data_bases = { # Structure: "City(short)": api # website
-    "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=100", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=100", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
+    "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=100000", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
+    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=200000", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
 }
 
 # get the Dataframe of choosen city with only valid coloums (to analyze)
@@ -59,6 +59,7 @@ def getDataFrame(city: str):
     '''Reads the json of given city api, removes not usable columns and renames the keys to global key words.
     '''
     start_time = time.time()
+    city = city.upper()
     data_base = None # data base from city crime api - none because value will be tried to set with 'try'
     label_conversion = None # conversion table (keys_for_analyzing) - also being set with 'try'
 

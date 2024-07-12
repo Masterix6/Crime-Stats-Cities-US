@@ -2,6 +2,8 @@ import DataCollectionA
 import DataProcessingA
 import VisualizingA
 import time
+import DataProcessingI
+
 
 keys_for_analyzing = ["start_date", "crime_desc", "borough", "suspect_age", "suspect_race", "suspect_sex", "victim_age", "victim_race", "vicitm_sex", "position"]
 time_types = ["start_date"]#, "end_date", "report_date"]
@@ -135,7 +137,7 @@ while True:
                 continue
 
         elif graph_type == "map":
-            print("Not avaible atm")
+            DataProcessingI.callfunc()
 
     else:
             print("All cities are choosen and only graph is avaiable as option.")
