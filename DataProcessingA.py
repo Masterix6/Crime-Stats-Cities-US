@@ -119,6 +119,7 @@ def clamp(number: int, min: int, max: int): # return number inbetween min and ma
     if number > max:
         number = max
     elif number < min:
+        print(number)
         number = min
 
     return number
@@ -149,21 +150,32 @@ def ExtractTime(TimeValue:(str | datetime.datetime | datetime.time)): # can extr
     elif type(TimeValue) == datetime.time:
         return TimeValue.hour, TimeValue.second
     else:
-        print("Time is not a valid type")
+        #print("Time is not a valid type")
         return 0, 0
 
 def CreateDatetime(TimeValue:(str | datetime.datetime | datetime.date | datetime.time),
                    TimeType: str, 
-                   IsMerged: bool):
+                   IsMerged: bool,
+                   city: str):
     '''This function can combine date and time to a datetime but can also handle
     time and date as single value.
     '''
     
     #print(f"Time Value: {TimeValue}, TimeType: {TimeType}, IsMerged: {IsMerged}")
     
+    if city == "LA":
+        if IsMerged:
+            #print(TimeValue)
+            TimeValue = TimeValue[0:23] + TimeValue[-4:-2] + ":" + TimeValue[-2:len(TimeValue)] + ":00"
+            #print(TimeValue)
+
+        else:
+            TimeValue = TimeValue[-4:-3] + ":" + TimeValue[-2:-1] + ":00"
+
     if TimeType == "date":
         Date = TimeValue[0:10]
         Time = TimeValue[23:32] if IsMerged else None
+
     elif TimeType == "time":
         Date = TimeValue[9:19] if IsMerged else None
         Time = TimeValue[0:8]
@@ -174,7 +186,7 @@ def CreateDatetime(TimeValue:(str | datetime.datetime | datetime.date | datetime
         year, month, day = ExtractDate(Date)
         hour, second = ExtractTime(Time)
 
-        year = clamp(year, 2019, 2024)
+        year = clamp(year, 2010, 2024)
         #print(f"Month: {month}")
         return datetime.datetime(year, month, day, hour, second)
     
@@ -183,7 +195,12 @@ def CreateDatetime(TimeValue:(str | datetime.datetime | datetime.date | datetime
         return datetime.time(hour, second)
 
 def ConvertFromDict(value, city, key): # function for dataframe.apply(function)
-    return conversion_data[city][key][value]
+    try:
+        return conversion_data[city][key][str(value)]
+    except:
+        return "?"
+
+
 
 
 
@@ -222,18 +239,22 @@ def ConvertData(data_base: pandas.DataFrame, city: str, to_convert: str, merge=F
             #print(to_convert)
             string_name, string_time = to_convert[0:split_num], to_convert[(split_num + 1):len(to_convert)] # split key-name into 'name' and 'type'
             #print(string_time)
+
             if string_time == "date" or string_time == "time": # only types which are elgiable for merge
                 opposit = "time" if string_time == "date"  else "date" # get the other to find the merge column
                 #print(3)
+
                 try: # try to find merge column
                     merge_column = data_base[f"{string_name}_{opposit}"]
+
                 except: # couldnt find merge column
                     print("Merge failed, continuing single conversion")
+
 
     #print(f"Merge column: {merge_column}")
     #print(type(None))
     if type(merge_column) != type(None):
-        coloumn = coloumn + merge_column
+        coloumn = coloumn.astype(str) + merge_column.astype(str)
         #print(coloumn)
 
 
@@ -241,7 +262,7 @@ def ConvertData(data_base: pandas.DataFrame, city: str, to_convert: str, merge=F
         data_base[to_convert] = coloumn.apply(ConvertFromDict, args=(city, to_convert))
 
     elif type(conversion) == str: # it will be considered as date or time type
-        data_base[to_convert] = coloumn.apply(CreateDatetime, args=(conversion, type(merge_column) != type(None)))
+        data_base[to_convert] = coloumn.apply(CreateDatetime, args=(conversion, type(merge_column) != type(None), city))
         #coloumn[index] = 
         # data_base[to_convert][index] = CreateDatetime(value, conversion, merge_column[index] if merge_column else None)
 
@@ -257,7 +278,7 @@ def ConvertData(data_base: pandas.DataFrame, city: str, to_convert: str, merge=F
 
 
 
-def GetGraph_CompareCities(dataframes: (tuple | list), 
+def GetGraph_CompareCities(dataframes: (dict), 
                            x_column: (str), 
                            y_column: str | None = None, 
                            y_lookfor = None, 
@@ -271,7 +292,7 @@ def GetGraph_CompareCities(dataframes: (tuple | list),
     graphs = {} # y_value for each graph/dataframe
     attribute_of_value = filter_mode
 
-    dataframe_for_x = dataframes[0]
+    dataframe_for_x = dataframes[list(dataframes.keys())[0]]
 
     #test = set()
 
@@ -314,9 +335,9 @@ def GetGraph_CompareCities(dataframes: (tuple | list),
         x_values_indexs[value] = index
         index += 1
 
+    print(x_values)
     # create keys/indexs to prevent key error
-    current_graph = 0
-    for dataframe in dataframes:
+    for current_graph, dataframe in dataframes.items():
         for index in x_values_indexs.values():
             try:
                 graphs[current_graph][index] = 0
@@ -324,7 +345,7 @@ def GetGraph_CompareCities(dataframes: (tuple | list),
                 graphs[current_graph] = {}
                 graphs[current_graph][index] = 0
 
-            
+          
         # loop to count values
         if y_lookfor: # if it should count each row haveing a ceratin value (for example each row of the year 2020)
             if attribute_of_value: # if for example it should extract year from datetime
@@ -335,19 +356,24 @@ def GetGraph_CompareCities(dataframes: (tuple | list),
             else: # if it should just take the value without extraction
                 for index, row in dataframe.iterrows():
                     if row[y_column] == y_lookfor:
-                        graphs[current_graph][int(x_values_indexs[row[x_column]])] += 1 # add 1 to the value which is linked to the same data value
-                
+                        try:
+                            graphs[current_graph][int(x_values_indexs[row[x_column]])] += 1 # add 1 to the value which is linked to the same data value
+                        except:
+                            pass               
         else:
             if attribute_of_value: # if for example it should extract year from datetime
                 for index, row in dataframe.iterrows():
-                    graphs[current_graph][int(x_values_indexs[row[x_column].__getattribute__(attribute_of_value)])] += 1 # add 1 to the value which is linked to the same data value
-            
+                    print(row[x_column].__getattribute__(attribute_of_value))
+                    try:
+                        graphs[current_graph][int(x_values_indexs[row[x_column]])] += 1 # add 1 to the value which is linked to the same data value
+                    except:
+                        pass
+                    
             else: # if it should just take the value without extraction
                 for index, row in dataframe.iterrows():
                     graphs[current_graph][int(x_values_indexs[row[x_column]])] += 1 # add 1 to the value which is linked to the same data value
 
         graphs[current_graph] = list(graphs[current_graph].values()) # convert each graph to list to make it readable for matplotlib
-        current_graph += 1
 
     return [list(x_values), graphs]
 
@@ -437,8 +463,7 @@ def GetGraph_CompareCity(dataframe: pandas.DataFrame,
 
 def GetBars_CompareCity(dataframe: pandas.DataFrame, 
                             column: str, 
-                            filter_mode: str | None = None,
-                            merge: bool = False):
+                            filter_mode: str | None = None):
     '''This function counts the amount of a appearances of one value in different data frames. 
     It returns labels + sizes which fit for bar and pie charts.
     '''

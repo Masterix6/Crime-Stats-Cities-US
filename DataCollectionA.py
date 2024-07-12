@@ -6,9 +6,9 @@ keys_for_analyzing = { # keys which will be kept
     "NY": {
         "cmplnt_fr_dt": "start_date",
         "cmplnt_fr_tm": "start_time",
-        "cmplnt_to_dt": "end_date",
-        "cmplnt_to_tm": "end_time",
-        "rpt_dt": "report_date",
+        #"cmplnt_to_dt": "end_date",
+        #"cmplnt_to_tm": "end_time",
+        #"rpt_dt": "report_date",
 
         "ofns_desc": "crime_desc",
         "boro_nm": "borough",
@@ -31,7 +31,7 @@ keys_for_analyzing = { # keys which will be kept
         "time_occ": "start_time",
         # "cmplnt_to_dt": "end_date", #
         # "cmplnt_to_tm": "end_time", #
-        "date_rptd": "report_date",
+        #"date_rptd": "report_date",
         
         "crm_cd_desc": "crime_desc",
         "area_name": "borough",
@@ -50,8 +50,8 @@ keys_for_analyzing = { # keys which will be kept
 } 
 
 data_bases = { # Structure: "City(short)": api # website
-    "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=50000", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
-    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=1000", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
+    "NY": "https://data.cityofnewyork.us/resource/qgea-i56i.json?$limit=100", # https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data
+    "LA": "https://data.lacity.org/resource/63jg-8b9z.json?$limit=100", #https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
 }
 
 # get the Dataframe of choosen city with only valid coloums (to analyze)
@@ -79,12 +79,12 @@ def getDataFrame(city: str):
     
     data_base = pandas.read_json(data_base) # get json data from api with pandas
 
-    print(f"Got json after {time.time() - start_time} seconds")
+    #print(f"Got json after {time.time() - start_time} seconds")
 
     to_drop = list(data_base.columns) - label_conversion.keys() # set list of keys which are not eligible for analyzing
 
     data_base.drop(to_drop, axis=1, inplace=True) # removing not eligible keys
     data_base = data_base.rename(columns=label_conversion) # rename keys to (for program) readable format
     
-    print(f"Total time for DataCollection (secs): {time.time() - start_time}")
+    print(f"Total time of DataCollection for {city} [secs]: {time.time() - start_time}")
     return data_base
