@@ -2,39 +2,45 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import DataCollectionI
-import DataCollectionA
+import DataCollectionI2
+import folium
 
-link,dataplayerwants2=DataCollectionI.getDataFrameI()
-dataplayerwants2 =dataplayerwants2.pop()
+dataplayerwant=None
+link=None
+specificData=None
+UserSpecificdata=None
+ListOfValues=[]
+b=0
+colored= ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen', 'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray']
+while True:
+    b=b+1
+    if b == 15:
+        quit()
+    link,dataplayerwants2,UserSpecificdata,specificData=DataCollectionI.getDataFrameI(link,dataplayerwant,specificData,UserSpecificdata,ListOfValues)
 
-#DataProcessing.getDataFrame()
-h=[] #every crime varuable
-b=1
-#info=pd.read_json(link)
-font1 = {'family':'serif','color':'blue','size':20}
-font2 = {'family':'serif','color':'black','size':10}
-info=pd.read_json(link)
-for index,row in info.iterrows():
-  #find the latitude and longitude of all the crimes and what crimes were commited
-  
-  x=row['latitude']#latitude
-  y=row['longitude']#longitude
-  if x != 0 and y !=0:
-    plt.plot(y, x,marker = '*',ms=0.1)#maked  the graph
-  #print(row[dataplayerwants1])
-  h=h+[row[dataplayerwants2]]#get all the crimes commited
-print(h)
-plt.show()#show the map
-z=set(h)#gets rid of all duplicates
-plt.figure(figsize=(15, 10))#sets size for graph
+    info=link
+    
+    m = folium.Map([40.7128, -74.0060], zoom_start=4)
+    group_1 = folium.FeatureGroup("first group").add_to(m)
+    for i in range(0,len(info[0])):
+    #find the latitude and longitude of all the crimes and what crimes were commited
+       # print(info)
+        if info[0][i] == UserSpecificdata:
+            latitude=info[1][i]#latitude
+            longitude=info[2][i]#longitude
 
-for p in z:#gets all of the difrent crimes
-  q = h.count(p)#see how many times the crime was commited
-  plt.bar(p,q)#creates the bar
-  plt.text(p, q, q,ha = 'center')#adds the labals to the graph
-plt.title(f"Crime Data",fontdict = font1)#title
-plt.xlabel("Longitude",fontdict = font2)#x labal
-plt.ylabel("Latitude",fontdict = font2)#y lebal
-plt.xticks(rotation=90)#rotates the titals and makes it so it doesn't overlap
-
-plt.show()#show graph
+            print('hello',latitude,longitude)
+            
+            if latitude == "nan" or longitude == "nan":
+                continue
+            
+            if longitude != 0 and latitude !=0:
+            #  print(f"Lat: {type(latitude)}, Long: {longitude}")
+                folium.Marker(
+                    location=[latitude,longitude],
+                    tooltip="Click me!",
+                    popup="2",
+                    icon=folium.Icon(color=colored[b]),
+                ).add_to(m)
+                #folium.LayerControl().add_to(m)
+    m.save("index.html")
