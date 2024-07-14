@@ -13,7 +13,6 @@ This project focuses on collecting and analyzing crime data from various large c
 - [Planned Cities](#planned-cities)
 - [How to Use](#how-to-use)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
