@@ -59,10 +59,10 @@ def getDataFrame(city: str,DataSet:str, column:str):
     start_time = time.time()
     data_base = None # data base from city crime api - none because value will be tried to set with 'try'
     label_conversion = None # conversion table (keys_for_analyzing) - also being set with 'try'
-    if city == "ny"
+    if city == "ny":
         lon = "longitude"
         lat = "latitude"
-    elif city == "la"
+    elif city == "la":
         lon = "lon"
         lat = "lat"
     # try to find city crime api
