@@ -12,7 +12,6 @@ This project focuses on collecting and analyzing crime data from various large c
 - [Current Cities](#current-cities)
 - [Planned Cities](#planned-cities)
 - [How to Use](#how-to-use)
-- [Contributing](#contributing)
 
 ## Introduction
 
